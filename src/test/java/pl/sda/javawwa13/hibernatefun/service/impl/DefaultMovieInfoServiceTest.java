@@ -67,7 +67,16 @@ public class DefaultMovieInfoServiceTest {
 
     @Test
     public void shouldUpdateAvgScoreForMovies() {
-        
+        insertMoviesIntoDb();
+        try(Session session = sessionFactory.openSession()) {
+            MovieInfo mi = movieInfoService.findOrCreateMovieInfo(session, "Ogniem i mieczem");
+            assertEquals(mi.getAvgScore(), 8.5);
+            movieInfoService.updateMovieInfo(session, "Ogniem i mieczem", 8.23);
+        }
+        try(Session session = sessionFactory.openSession()) {
+            MovieInfo mi = movieInfoService.findOrCreateMovieInfo(session, "Ogniem i mieczem");
+            assertEquals(mi.getAvgScore(), 8.23);
+        }
     }
 
     private MovieInfo createMovieInfo(final String title, final Double avgScore) {
