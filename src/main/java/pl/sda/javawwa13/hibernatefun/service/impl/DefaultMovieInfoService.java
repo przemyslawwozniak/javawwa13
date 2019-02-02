@@ -1,6 +1,7 @@
 package pl.sda.javawwa13.hibernatefun.service.impl;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import pl.sda.javawwa13.hibernatefun.model.MovieInfo;
 import pl.sda.javawwa13.hibernatefun.service.MovieInfoService;
@@ -22,6 +23,18 @@ public class DefaultMovieInfoService implements MovieInfoService {
             mi.setTitle(title);
             session.save(mi);
         }
+        return mi;
+    }
+
+    @Override
+    public MovieInfo updateMovieInfo(Session session, String title, Double score) {
+        MovieInfo mi = findMovieInfo(session, title);
+        if(mi == null) {
+            return null;    //see the docs
+        }
+        Transaction tx = session.beginTransaction();
+        mi.setAvgScore(score);
+        tx.commit();
         return mi;
     }
 

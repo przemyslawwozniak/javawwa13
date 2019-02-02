@@ -45,14 +45,29 @@ public class DefaultMovieInfoServiceTest {
     @Test
     public void shouldFindCreatedMovie() {
         //Tworzymy filmy - insertMoviesIntoDb()
+        insertMoviesIntoDb();
         //otwieramy sesje
-        //movieInfoService.findOrCreate("Ogniem i mieczem")
-        //avgScore not null
+        try(Session session = sessionFactory.openSession()) {
+            //movieInfoService.findOrCreate("Ogniem i mieczem")
+            MovieInfo mi = movieInfoService.findOrCreateMovieInfo(session, "Ogniem i mieczem");
+            assertNotNull(mi.getAvgScore(), "Score should not be null");
+        }
     }
 
     @Test
     public void shouldCreateNotFoundMovie() {
         //avgScore is null
+        try(Session session = sessionFactory.openSession()) {
+            MovieInfo mi = movieInfoService.findOrCreateMovieInfo(session, "Ogniem i mieczem");
+            assertNull(mi.getAvgScore(), "Score should be null");
+            assertEquals(mi.getTitle(), "Ogniem i mieczem");
+            assertNotNull(mi.getId(), "ID should already exist");
+        }
+    }
+
+    @Test
+    public void shouldUpdateAvgScoreForMovies() {
+        
     }
 
     private MovieInfo createMovieInfo(final String title, final Double avgScore) {
