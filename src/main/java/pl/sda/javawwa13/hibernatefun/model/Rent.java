@@ -22,4 +22,8 @@ public class Rent {
 
     private Boolean isOpinionProvided;
 
+    private Customer customer;
+
+    private MovieCopy movieCopy;
+
 }

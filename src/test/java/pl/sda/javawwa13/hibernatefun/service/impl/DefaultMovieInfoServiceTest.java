@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import pl.sda.javawwa13.hibernatefun.model.MovieInfo;
@@ -27,11 +28,17 @@ public class DefaultMovieInfoServiceTest {
         sessionFactory = new MetadataSources(registry)
                 .buildMetadata()
                 .buildSessionFactory();
+
+        insertMoviesIntoDb();
     }
+
+    //run this after every method execution
+    @AfterTest
+    public void cleanUpDB() {}
 
     @Test
     public void shouldPersistGivenMovies() {
-        insertMoviesIntoDb();
+        //insertMoviesIntoDb();
         //tutaj powinny byc juz zapisane 3 filmy w bazie
         try(Session session = sessionFactory.openSession()) {
             MovieInfo mi = movieInfoService.findMovieInfo(session, "Ogniem i mieczem");
@@ -45,7 +52,7 @@ public class DefaultMovieInfoServiceTest {
     @Test
     public void shouldFindCreatedMovie() {
         //Tworzymy filmy - insertMoviesIntoDb()
-        insertMoviesIntoDb();
+        //insertMoviesIntoDb();
         //otwieramy sesje
         try(Session session = sessionFactory.openSession()) {
             //movieInfoService.findOrCreate("Ogniem i mieczem")
@@ -58,16 +65,16 @@ public class DefaultMovieInfoServiceTest {
     public void shouldCreateNotFoundMovie() {
         //avgScore is null
         try(Session session = sessionFactory.openSession()) {
-            MovieInfo mi = movieInfoService.findOrCreateMovieInfo(session, "Ogniem i mieczem");
+            MovieInfo mi = movieInfoService.findOrCreateMovieInfo(session, "Dzieci z dworca ZOO");
             assertNull(mi.getAvgScore(), "Score should be null");
-            assertEquals(mi.getTitle(), "Ogniem i mieczem");
+            assertEquals(mi.getTitle(), "Dzieci z dworca ZOO");
             assertNotNull(mi.getId(), "ID should already exist");
         }
     }
 
     @Test
     public void shouldUpdateAvgScoreForMovies() {
-        insertMoviesIntoDb();
+        //insertMoviesIntoDb();
         try(Session session = sessionFactory.openSession()) {
             MovieInfo mi = movieInfoService.findOrCreateMovieInfo(session, "Ogniem i mieczem");
             assertEquals(mi.getAvgScore(), 8.5);

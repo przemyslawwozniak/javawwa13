@@ -24,4 +24,8 @@ public class Rank {
 
     private Double score;
 
+    private Customer customer;
+
+    private MovieInfo movieInfo;
+
 }
