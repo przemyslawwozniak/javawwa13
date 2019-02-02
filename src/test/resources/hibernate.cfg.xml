@@ -17,5 +17,9 @@
         <!-- Klasy mapowane -->
         <mapping class="pl.sda.javawwa13.hibernatefun.model.SimpleMovie"/>
         <mapping class="pl.sda.javawwa13.hibernatefun.model.MovieInfo"/>
+        <mapping class="pl.sda.javawwa13.hibernatefun.model.MovieCopy"/>
+        <mapping class="pl.sda.javawwa13.hibernatefun.model.Rank"/>
+        <mapping class="pl.sda.javawwa13.hibernatefun.model.Rent"/>
+        <mapping class="pl.sda.javawwa13.hibernatefun.model.Customer"/>
     </session-factory>
 </hibernate-configuration>
