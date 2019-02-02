@@ -8,6 +8,6 @@ public interface MovieInfoServiceRefactored {
     MovieInfo findMovieInfo(String title);
     MovieInfo findOrCreateMovieInfo(String title);
     MovieInfo updateMovieInfo(String title, Double score);
-    MovieInfo deleteMovieInfo(String title);
+    void deleteMovieInfo(String title);
 
 }
