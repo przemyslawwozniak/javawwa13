@@ -25,5 +25,6 @@
         <mapping class="pl.sda.javawwa13.hibernatefun.model.Message"/>
         <mapping class="pl.sda.javawwa13.hibernatefun.model.EmailMapped"/>
         <mapping class="pl.sda.javawwa13.hibernatefun.model.MessageMapped"/>
+        <mapping class="pl.sda.javawwa13.hibernatefun.model.MovieInfoValidated"/>
     </session-factory>
 </hibernate-configuration>
