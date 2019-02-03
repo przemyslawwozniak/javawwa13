@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Data
@@ -27,5 +29,15 @@ public class MovieInfo {
 
     @OneToMany(mappedBy = "movieInfo", orphanRemoval = true, cascade = {CascadeType.PERSIST})
     private List<Rank> ranks;
+
+    private LocalDate releaseDate;
+
+    @Transient
+    private Long daysSinceRelease;
+
+    @PostLoad
+    public void calculateDaysSinceRelease() {
+        this.daysSinceRelease = ChronoUnit.DAYS.between(releaseDate, LocalDate.now());
+    }
 
 }

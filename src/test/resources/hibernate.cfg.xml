@@ -21,5 +21,9 @@
         <mapping class="pl.sda.javawwa13.hibernatefun.model.Rank"/>
         <mapping class="pl.sda.javawwa13.hibernatefun.model.Rent"/>
         <mapping class="pl.sda.javawwa13.hibernatefun.model.Customer"/>
+        <mapping class="pl.sda.javawwa13.hibernatefun.model.Email"/>
+        <mapping class="pl.sda.javawwa13.hibernatefun.model.Message"/>
+        <mapping class="pl.sda.javawwa13.hibernatefun.model.EmailMapped"/>
+        <mapping class="pl.sda.javawwa13.hibernatefun.model.MessageMapped"/>
     </session-factory>
 </hibernate-configuration>

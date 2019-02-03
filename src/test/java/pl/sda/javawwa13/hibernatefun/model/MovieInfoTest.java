@@ -9,6 +9,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import static org.testng.Assert.assertNotNull;
@@ -100,6 +101,30 @@ public class MovieInfoTest {
             assertNull(mc1);
             mc2 = session.get(MovieCopy.class, mc2Id);
             assertNull(mc2);
+        }
+    }
+
+    @Test
+    public void daysSinceReleaseShouldBeCalculatedPostLoad() {
+        Long mId;
+        MovieInfo mi1 = new MovieInfo.MovieInfoBuilder()
+                .title("Ogniem i mieczem")
+                .avgScore(8.5)
+                .releaseDate(LocalDate.of(1999, 2, 8))
+                .build();
+        try(Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.persist(mi1);
+            tx.commit();
+            //IDs should be set for persisted entities
+            mId = mi1.getId();
+            assertNotNull(mId);
+            assertNull(mi1.getDaysSinceRelease());
+        }
+        try(Session session = sessionFactory.openSession()) {
+            mi1 = session.get(MovieInfo.class, mId);
+            assertNotNull(mi1.getDaysSinceRelease());
+            System.out.println("Dni od premiery: " + mi1.getDaysSinceRelease());
         }
     }
 
