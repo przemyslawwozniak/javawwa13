@@ -15,6 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@NamedQueries({
+        @NamedQuery(name="movieinfo.byFilmCompany",
+        query="from MovieInfo mi where mi.filmCompany=:company"),
+        @NamedQuery(name="movieinfo.byAvgScore",
+        query="from MovieInfo mi where mi.avgScore>=:score")
+})
 public class MovieInfo {
 
     @Id
@@ -31,6 +37,8 @@ public class MovieInfo {
     private List<Rank> ranks;
 
     private LocalDate releaseDate;
+
+    private String filmCompany;
 
     @Transient
     private Long daysSinceRelease;

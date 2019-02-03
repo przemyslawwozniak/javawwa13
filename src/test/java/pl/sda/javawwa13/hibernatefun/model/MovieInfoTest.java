@@ -8,10 +8,14 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
+import pl.sda.javawwa13.hibernatefun.util.SessionUtil;
 
+import org.hibernate.query.Query;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 
@@ -125,6 +129,50 @@ public class MovieInfoTest {
             mi1 = session.get(MovieInfo.class, mId);
             assertNotNull(mi1.getDaysSinceRelease());
             System.out.println("Dni od premiery: " + mi1.getDaysSinceRelease());
+        }
+    }
+
+    @Test
+    public void testNamedQueryByFilmCompany() {
+        MovieInfo mi1 = MovieInfo.builder()
+                .title("The Hobbit: An Unexpected Journey")
+                .releaseDate(LocalDate.of(2012, 12, 25))
+                .filmCompany("Warner Bros")
+                .build();
+        MovieInfo mi2 = MovieInfo.builder()
+                .title("The Dark Knight")
+                .releaseDate(LocalDate.of(2019, 2, 3))
+                .filmCompany("Warner Bros")
+                .build();
+        MovieInfo mi3 = MovieInfo.builder()
+                .title("Spider-Man 3")
+                .releaseDate(LocalDate.of(2018, 1, 1))
+                .filmCompany("Sony Pictures")
+                .build();
+        MovieInfo mi4 = MovieInfo.builder()
+                .title("Pirates of the Caribbean: Dead Man's Chest")
+                .releaseDate(LocalDate.of(2017, 1, 1))
+                .filmCompany("Walt Disney Studios")
+                .build();
+
+        try(Session session = SessionUtil.getSession()) {
+            Transaction tx = session.beginTransaction();
+            session.persist(mi1);
+            session.persist(mi2);
+            session.persist(mi3);
+            session.persist(mi4);
+            tx.commit();
+        }
+
+        try(Session session = SessionUtil.getSession()) {
+            Query query = session.getNamedQuery("movieinfo.byFilmCompany");
+            query.setParameter("company", "Warner Bros");
+            List<MovieInfo> wbMovies = query.list();
+            assertEquals(wbMovies.size(), 2);
+
+            query.setParameter("company", "Sony Pictures");
+            MovieInfo sonyMovie = (MovieInfo) query.uniqueResult();
+            assertEquals(sonyMovie.getTitle(), "Spider-Man 3");
         }
     }
 
