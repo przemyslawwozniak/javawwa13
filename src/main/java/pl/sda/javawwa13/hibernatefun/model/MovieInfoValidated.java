@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import pl.sda.javawwa13.hibernatefun.annotation.AfterDVDPremiere;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -19,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@AfterDVDPremiere
 public class MovieInfoValidated {
 
     @Id
